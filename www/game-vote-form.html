@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html ng-app="gameVoteApp">
+    <head>
+        <meta charset="utf-8">
+        <title>Game Vote</title>
+        <noscript>Please turn on "Allow JavaScript"</noscript>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimal-ui">
+        <link rel="stylesheet" href="bower_components/angular-material/angular-material.min.css">
+        <link rel="stylesheet" href="base.css">
+        <script src="bower_components/angular/angular.min.js"></script>
+        <script src="bower_components/angular-animate/angular-animate.min.js"></script>
+        <script src="bower_components/angular-aria/angular-aria.min.js"></script>
+        <script src="bower_components/angular-material/angular-material.min.js"></script>
+        <script src="js/game-vote.js"></script>
+    </head>
+    <body layout="column" ng-controller="GameFormController" >
+        <form>
+            <label class="caption">Team ID</label>&nbsp;&nbsp;
+            <md-select ng-model="teamId" placeholder="선택하세요">
+                <md-option ng-value="team" ng-repeat="team in teamIds">{{ team }}</md-option>
+            </md-select>
+            <!-- <select ng-options="v for v in teamIds" class="form-control" ng-model="teamId"></select> -->
+            <br>
+            <label class="caption">Player ID</label>&nbsp;&nbsp;
+            <md-select ng-model="playerId" placeholder="선택하세요">
+                <md-option ng-value="player" ng-repeat="player in playerIds">{{ player }}</md-option>
+            </md-select>
+            <!-- <select ng-options="v for v in playerIds" class="form-control" ng-model="playerId"></select> -->
+            <br>
+            <md-radio-group ng-model="selectTime">
+                <md-radio-button value="begin" aria-label="begin">
+                    시작
+                </md-radio-button>
+                <md-radio-button value="end" aria-label="end">
+                    종료
+                </md-radio-button>
+            </md-radio-group>
+            <label class="caption">{{questions[0]}}</label>&nbsp;&nbsp;
+            <md-select ng-model="wishGame" placeholder="선택하세요">
+                <md-option ng-value="team" ng-repeat="team in teamIds">{{ team }}</md-option>
+            </md-select>
+            <!-- <select ng-options="v for v in teamIds" class="form-control" ng-model="wishGame"></select> -->
+            <br/>
+            <div>
+                &nbsp;
+            </div>
+            <md-button layout-fill ng-click="vote()" class="md-raised md-primary">제출</md-button>
+        </form>
+    </body>
+</html>

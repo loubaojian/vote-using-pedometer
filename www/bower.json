@@ -1,0 +1,10 @@
+{
+  "name": "vote",
+  "version": "1.0.0",
+  "homepage": "https://github.com/nolgong/vote",
+  "dependencies": {
+    "angular-material": "*",
+    "d3": "~3.5.2",
+    "angular-charts": "~0.2.6"
+  }
+}

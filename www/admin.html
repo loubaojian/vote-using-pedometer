@@ -1,0 +1,80 @@
+<!-- <div ng-init="checkName()">
+    <div>
+    {{sessionName}}
+    </div>
+    <div>
+    <button ng-click="setName('success-begin')">Begin</button>
+    <button ng-click="setName('success-end')">End</button>
+    <button ng-click="checkName()">Check</button>
+    </div>
+</div> -->
+<!DOCTYPE html>
+<html ng-app="adminApp">
+    <head>
+        <meta charset="utf-8">
+        <title>ADMIN</title>
+        <noscript>Please turn on "Allow JavaScript"</noscript>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimal-ui">
+        <link rel="stylesheet" href="bower_components/angular-material/angular-material.min.css">
+        <script src="bower_components/angular/angular.min.js"></script>
+        <script src="bower_components/angular-animate/angular-animate.min.js"></script>
+        <script src="bower_components/angular-aria/angular-aria.min.js"></script>
+        <script src="bower_components/angular-material/angular-material.min.js"></script>
+        <script src="js/admin.js"></script>
+    </head>
+    <body ng-controller="AdminController">
+        <div>
+            <h1>MoMak 투표 (Person Vote)</h1>
+        </div>
+        <div>
+            <h3>팀 수, 플레이어 수를 입력하세요<span style="color: red">&nbsp;&nbsp;초기화됩니다!</span></h3>
+            팀<input type="text" ng-model="personTeamSize"></input>
+            플레이어<input type="text" ng-model="personPlayerSize"></input>
+            <button class="btn btn-default" ng-click="setPersonSize()">생성하기</button>
+            <hr style="width: 80%;" align="left">
+        </div>
+        <div>
+            <h3>현재 질문 목록</h3>
+            <button ng-click="getQuestionList()">불러오기</button>
+            <!-- 질문 목록 뜨게 -->
+            <div ng-repeat="q in questionList">
+                [{{q.type}}]&nbsp;{{q.value}} <button ng-click="deleteQuestion(q._id)">삭제</button>
+            </div>
+            <hr style="width: 80%;" align="left">
+        </div>
+        <div>
+            <h3>새 질문을 입력하세요</h3>
+            <!-- <input type="text" ng-model="questionType"></input> -->
+            <select ng-model="questionType">
+                <option value="choice">객관식(특정팀/플레이어)</option>
+                <option value="score">주관식(0-100점)</option>
+                <option value="text">서술형</option>
+            </select>
+            <input type="text" ng-model="questionValue"></input>
+            <button ng-click="addQuestion()">추가하기</button>
+            <div>
+                예시~~ : [괄호]를 빼고 복붙해주세요<br>
+                [객관식] 우리팀 리더는 누구였습니까?<br>
+                [객관식] 우리팀 아이디어 뱅크는 누구였습니까?<br>
+                [주관식] 우리팀 협업 점수는? (0-100)<br>
+                [주관식] 내가 우리팀에 기여한 점수는 몇점입니까? (0~100점)<br>
+                [서술형] 나의 제2의 도약을 위해 가장 필요한 것을 한 단어로 말한다면?<br>
+            </div>
+            <hr style="width: 80%;" align="left">
+        </div>
+
+
+        <div>
+            <h1>Tinkering 투표 (Game Vote)</h1>
+        </div>
+        <div>
+            <h3>팀 수, 플레이어 수를 입력하세요<span style="color: red">&nbsp;&nbsp;초기화됩니다!</span></h3>
+            팀<input type="text" ng-model="gameTeamSize"></input>
+            플레이어<input type="text" ng-model="gamePlayerSize"></input>
+            <button class="btn btn-default" ng-click="setGameSize()">생성하기</button>
+            <hr style="width: 80%;" align="left">
+        </div>
+
+
+    </body>
+</html>

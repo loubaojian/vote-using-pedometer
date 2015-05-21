@@ -1,0 +1,4 @@
+__pycache__/
+db/config.py
+db/*.pyc
+db/__pycache__/

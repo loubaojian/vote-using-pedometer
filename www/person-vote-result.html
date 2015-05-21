@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<style>
+  .title {
+    font-size: 15pt;
+    font-weight: bold;
+    padding: 20px 0px 10px 0px;
+  }
+</style>
+<html ng-app="personVoteApp">
+    <head>
+        <meta charset="utf-8">
+        <title>Result</title>
+        <noscript>Please turn on "Allow JavaScript"</noscript>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimal-ui">
+        <link rel="stylesheet" href="bower_components/angular-material/angular-material.min.css">
+        <script src="bower_components/angular/angular.min.js"></script>
+        <script src="bower_components/angular-animate/angular-animate.min.js"></script>
+        <script src="bower_components/angular-aria/angular-aria.min.js"></script>
+        <script src="bower_components/angular-material/angular-material.min.js"></script>
+        <script src="js/person-vote.js"></script>
+    </head>
+    <body ng-controller="ResultController" layout="column" flex layout-padding>
+      <div layout="column">
+        <form class="form-inline">
+          <label>Team ID</label>&nbsp;&nbsp;
+          <md-select ng-change="show()" ng-model="teamId" placeholder="선택하세요">
+              <md-option ng-value="team" ng-repeat="team in teamIds">{{ team }}</md-option>
+          </md-select>
+        </form>
+      </div>
+      <div>
+        <br>
+      </div>
+
+      <md-tabs>
+        <md-tab id="tab1">
+          <md-tab-label class="title">투표 결과</md-tab-label>
+          <md-tab-template>
+
+            <div layout="column" flex>
+              <div flex class="title">
+                객관식
+              </div>
+              <table cellpadding="5" class="table" rules="all">
+                  <thead>
+                      <tr>
+                          <td>질문</td>
+                          <td ng-repeat="playerId in playerIds">{{ ::$index+1 }}</td>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr ng-repeat="question in questions | filter : {type : 'choice'}">
+                          <td>{{ ::question.value }}<br>
+                              {{ thumbNail[$index] }}</td>
+                          <td bgcolor="{{ (maxChoice[$parent.$index][$index+1] === 1) ? '#FFD3B5' : '' }}" ng-repeat="playerId in playerIds">{{ choicesSum[$parent.$index][$index] }}</td>
+                      </tr>
+                  </tbody>
+              </table>
+            </div>
+
+            <div layout="column" flex>
+              <div flex class="title">
+                점수
+              </div>
+              <div flex ng-repeat="question in questions | filter : {type : 'score'}" layout-padding>
+                  {{ ::question.value }} : {{ scoresAvg[$index] }} 점
+              </div>
+            </div>
+
+            <div layout="column" flex>
+              <div flex class="title">
+                키워드
+              </div>
+              <div flex ng-repeat="player in players track by $index" layout-padding>
+                  {{ player.username }} {{ playersName[$index] }} : {{ player.keyword }}
+              </div>
+            </div>
+            <div>
+              <br><br>
+            </div>
+
+          </md-tab-template>
+        </md-tab>
+        <md-tab id="tab2">
+          <md-tab-label class="title">팀원 타입</md-tab-label>
+          <md-tab-template>
+            <div layout="column" flex>
+              <div class="title">
+                내가 생각하는 나의 타입
+              </div>
+              <table cellpadding="5" class="table" rules="all">
+                <thead align="center">
+                    <tr>
+                      <td style="color: black; background-color: #2E7D32; width: 25%;">골목대장</td>
+                      <td style="color: black; background-color: #FF8F00; width: 25%;">윤활유</td>
+                      <td style="color: black; background-color: #6A1B9A; width: 25%;">고양이</td>
+                      <td style="color: black; background-color: #0277BD; width: 25%;">장미</td>
+                    </tr>
+                </thead>
+                <tbody align="center">
+                    <tr>
+                        <td ng-repeat="type in typeByMe track by $index" style="background-color: {{prominentTypeByMe === type ? '#FFD3B5' : 'white'}}; width: 25%;">{{ type }} </td>
+                    </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div flex layout="column">
+              <div class="title">
+                팀원이 생각하는 나의 타입
+              </div>
+              <table cellpadding="5" class="table" rules="all">
+                <thead align="center">
+                  <tr>
+                    <td style="width: 8%;"></td>
+                    <td style="width: 32%;">이름</td>
+                    <td style="color: black; background-color: #2E7D32; width: 15%;">골목대장</td>
+                    <td style="color: black; background-color: #FF8F00; width: 15%;">윤활유</td>
+                    <td style="color: black; background-color: #6A1B9A; width: 15%;">고양이</td>
+                    <td style="color: black; background-color: #0277BD; width: 15%;">장미</td>
+                  </tr>
+                </thead>
+                <tbody align="center">
+                  <tr ng-repeat="player in typeByOthers track by $index">
+                    <td style="width: 8%;">{{ $index+1 }}</td>
+                    <td style="width: 32%;">{{ playersName[$index] }}</td>
+                    <td ng-repeat="count in player track by $index" style="background-color: {{prominentTypesByOthers[$parent.$index] === count ? '#FFD3B5' : 'white'}}; width:15%;">
+                      {{ count }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <!-- <div flex layout="column" align="center">
+                <div flex layout="row">
+                  <div flex="10">팀원</div>
+                  <div flex>이름</div>
+                  <div flex style="color: black; background-color: #2E7D32;">골목대장</div>
+                  <div flex style="color: black; background-color: #FF8F00;">윤활유</div>
+                  <div flex style="color: black; background-color: #6A1B9A;">고양이</div>
+                  <div flex style="color: black; background-color: #0277BD;">장미</div>
+                </div>
+                <div flex layout="row" ng-repeat="player in typeByOthers track by $index">
+                  <div flex="10">{{ $index+1 }}</div>
+                  <div flex>{{ playersName[$index] }}</div>
+                  <div flex ng-repeat="count in player track by $index" style="background-color: {{prominentTypesByOthers[$parent.$index] === count ? '#FFD3B5' : 'white'}}">
+                    {{ count }}
+                  </div>
+                </div>
+              </div> -->
+            </div>
+            <div>
+              <br><br>
+            </div>
+
+          </md-tab-template>
+        </md-tab>
+      </md-tabs>
+
+    </body>
+</html>

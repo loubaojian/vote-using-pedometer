@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html ng-app="personVoteApp">
+  <head>
+    <meta charset="utf-8">
+    <title>Person Vote</title>
+    <noscript>Please turn on "Allow JavaScript"</noscript>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimal-ui">
+    <link rel="stylesheet" href="bower_components/angular-material/angular-material.min.css">
+    <script src="bower_components/angular/angular.min.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.min.js"></script>
+    <script src="bower_components/angular-aria/angular-aria.min.js"></script>
+    <script src="bower_components/angular-material/angular-material.min.js"></script>
+    <script src="js/person-vote.js"></script>
+    <script src="cordova.js"></script>
+    <script src="js/plugin-test.js"></script>
+  </head>
+  <body layout="column" ng-controller="FormController" ng-hide="voted" layout-padding>
+    <div flex>
+    <form>
+      <div>
+        <label class="caption">Team ID</label>&nbsp;&nbsp;
+        <md-select ng-model="teamId" placeholder="선택하세요">
+            <md-option ng-value="team" ng-repeat="team in teamIds">{{ team }}</md-option>
+        </md-select>
+      </div>
+      <div>
+        <label class="caption">Player ID</label>&nbsp;&nbsp;
+        <md-select ng-model="playerId" placeholder="선택하세요">
+            <md-option ng-value="player" ng-repeat="player in playerIds">{{ player }}</md-option>
+        </md-select>
+      </div>
+
+      <div ng-repeat="question in questions | filter : {type : 'choice'}">
+        <label class="caption">{{question.value}}</label>&nbsp;&nbsp;
+        <md-select ng-model="choices[$index]" placeholder="선택하세요">
+            <md-option ng-value="choiceId.value" ng-repeat="choiceId in choiceIds">{{ choiceId.value }}</md-option>
+        </md-select>
+      </div>
+      <div ng-repeat="question in questions | filter : {type : 'score'}">
+        <md-input-container>
+          <label>{{question.value}}</label>
+          <input type="text" ng-model="scores[$index]">
+         </md-input-container>
+      </div>
+      <div ng-repeat="question in questions | filter : {type : 'text'}">
+        <md-input-container>
+          <label>{{question.value}}</label>
+          <input type="text" ng-model="texts[$index]">
+        </md-input-container>
+      </div>
+      <div>
+        <br><br>
+      </div>
+
+      각 팀원의 타입을 선택하세요.
+      <div layout="column" align="center" layout-padding>
+        <div flex layout="row" layout-align="center center">
+          <div flex="10">팀원</div>
+          <md-button flex ng-disabled="true" style="color: black; background-color: #2E7D32;">골목대장</md-button>
+          <md-button flex ng-disabled="true" style="color: black; background-color: #FF8F00;">윤활유</md-button>
+          <md-button flex ng-disabled="true" style="color: black; background-color: #6A1B9A;">고양이</md-button>
+          <md-button flex ng-disabled="true" style="color: black; background-color: #0277BD;">장미</md-button>
+        </div>
+        <div flex layout="row" layout-align="center center" ng-repeat="player in playerIds track by $index">
+          <div flex="10">{{ player }}</div>
+          <md-button flex ng-repeat="type in ['골목대장', '윤활유', '고양이', '장미'] track by $index" ng-click="typeMember($index, player)" class="md-raised"
+          style="background-color: {{ memberTypes[$parent.$index] != $index ? 'white' : $index == 0 ? '#2E7D32' : $index == 1 ? '#FF8F00' : $index == 2 ? '#6A1B9A' : $index == 3 ? '#0277BD' : 'white' }};" >
+            {{ type }}
+          </md-button>
+        </div>
+        <!-- <table cellpadding="5" class="table" rules="all">
+            <thead>
+                <tr>
+                  <td>팀원</td>
+                  <td style="color: black; background-color: #2E7D32;">골목대장</td>
+                  <td style="color: black; background-color: #FF8F00;">윤활유</td>
+                  <td style="color: black; background-color: #6A1B9A;">고양이</td>
+                  <td style="color: black; background-color: #0277BD;">장미</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="player in playerIds track by $index">
+                  <td>{{ player }}</td>
+                  <td ng-repeat="type in ['골목대장', '윤활유', '고양이', '장미'] track by $index" ng-click="typeMember($index, player)">{{ type }} </td>
+                </tr>
+            </tbody>
+        </table> -->
+      </div>
+      <div>
+        <br><br>
+      </div>
+      <md-button layout-fill ng-click="vote()" class="md-raised md-primary">제출</md-button>
+      <div>
+        <br><br>
+      </div>
+    </form>
+  </div>
+  </body>
+</html>
