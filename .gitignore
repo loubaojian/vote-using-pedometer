@@ -2,3 +2,6 @@ __pycache__/
 db/config.py
 db/*.pyc
 db/__pycache__/
+platforms/
+www/bower_components
+plugins/
